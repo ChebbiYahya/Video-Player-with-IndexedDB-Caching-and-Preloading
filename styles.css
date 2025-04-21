@@ -1,0 +1,13 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+  }
+
+  #video.fade {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+  }
+  #video.show {
+    opacity: 1;
+  }
