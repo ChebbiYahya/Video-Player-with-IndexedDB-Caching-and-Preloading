@@ -1,13 +1,61 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f4f4f4;
-  }
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f4f4f4;
+  margin: 0; /* Remove default body margin */
+  overflow: hidden; /* Prevent scrollbars if video is larger than viewport */
+}
 
-  #video.fade {
-    transition: opacity 0.3s ease-in-out;
-    opacity: 0;
-  }
-  #video.show {
-    opacity: 1;
-  }
+#videoContainer {
+  position: relative;
+  overflow: hidden;
+  width: 100vw; /* Use viewport width */
+  height: 100vh; /* Use viewport height */
+  background-color: black; /* Fallback background for the container */
+}
+
+#video1,
+#video2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure video covers the container without distorting aspect ratio */
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out; /* Increased transition duration for smoother fade */
+}
+
+/* Initially hide video2 and ensure video1 is potentially visible */
+#video1 {
+  opacity: 1; /* Start with video1 visible (will be controlled by JS show class) */
+  z-index: 1; /* Start with video1 on top */
+}
+
+#video2 {
+  opacity: 0; /* Start with video2 hidden */
+  z-index: 0; /* Start with video2 below */
+}
+
+#video1.show,
+#video2.show {
+  opacity: 1;
+  z-index: 1; /* Ensure the shown video is on top */
+}
+
+#video1.hide,
+#video2.hide {
+  opacity: 0;
+  z-index: 0; /* Ensure the hidden video is below */
+}
+
+/* Remove the unused CSS rules */
+/*
+#video.fade {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+#video.show {
+  opacity: 1;
+}
+*/
