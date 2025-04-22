@@ -165,6 +165,16 @@ async function getStoredVideo(url) {
   });
 }
 
+async function getQuota(url, videoId) {
+  const quota = await navigator.storage.estimate();
+  const totalSpace = quota.quota;
+  const usedSpace = quota.usage;
+  return {
+    totalSpace,
+    usedSpace,
+  };
+}
+
 async function download(url) {
   console.log(`[download] Attempting to get video for: ${url}`);
   const cachedBlob = await getStoredVideo(url);
@@ -187,6 +197,14 @@ async function download(url) {
   } catch (error) {
     console.error(`[download] Failed to download blob for ${url}:`, error);
     return null; // Crucially, you return null here on failure
+  } finally {
+    const quota = await getQuota(url, videoId);
+    console.log(
+      `[storage] Quota: ${quota.totalSpace / 1024 / 1024}MB totalSpace`,
+    );
+    console.log(
+      `[storage] Quota: ${quota.usedSpace / 1024 / 1024}MB usedSpace`,
+    );
   }
 }
 
