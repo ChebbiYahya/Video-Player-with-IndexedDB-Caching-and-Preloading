@@ -335,6 +335,7 @@ async function playVideoByIndex(index) {
 
   activeVideo.classList.remove("hide");
   activeVideo.classList.add("show");
+  activeVideo.style.zIndex = 1;
   console.log(
     `[playVideoByIndex] Added 'show' to new active video (${activeVideo.id}).`,
   );
@@ -476,7 +477,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   video2.onended = () => {
     console.log("video2 ended.");
     playVideoByIndex((currentVideoIndex + 1) % videosData.length);
-    video2.pause();
+    // video2.pause();
   };
 
   window.addEventListener("beforeunload", () => {
