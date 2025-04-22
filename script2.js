@@ -165,7 +165,7 @@ async function getStoredVideo(url) {
   });
 }
 
-async function getQuota(url, videoId) {
+async function getQuota() {
   const quota = await navigator.storage.estimate();
   const totalSpace = quota.quota;
   const usedSpace = quota.usage;
@@ -198,13 +198,6 @@ async function download(url) {
     console.error(`[download] Failed to download blob for ${url}:`, error);
     return null; // Crucially, you return null here on failure
   } finally {
-    const quota = await getQuota(url, videoId);
-    console.log(
-      `[storage] Quota: ${quota.totalSpace / 1024 / 1024}MB totalSpace`,
-    );
-    console.log(
-      `[storage] Quota: ${quota.usedSpace / 1024 / 1024}MB usedSpace`,
-    );
   }
 }
 
@@ -488,14 +481,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.warn("[DOMContentLoaded] No videos to play.");
   }
 
-  video1.onended = () => {
+  video1.onended = async () => {
     console.log("video1 ended.");
     playVideoByIndex((currentVideoIndex + 1) % videosData.length);
+
+    const quota = await getQuota();
+
+    console.clear();
+    console.log(
+      `\x1b[36m[storage] Quota:\x1b[0m \x1b[32m${(quota.totalSpace / 1024 / 1024).toFixed(2)}MB\x1b[0m \x1b[33mtotalSpace\x1b[0m`,
+    );
+    console.log(
+      `\x1b[36m[storage] Quota:\x1b[0m \x1b[32m${(quota.usedSpace / 1024 / 1024).toFixed(2)}MB\x1b[0m \x1b[33musedSpace\x1b[0m`,
+    );
   };
-  video2.onended = () => {
+  video2.onended = async () => {
     console.log("video2 ended.");
     playVideoByIndex((currentVideoIndex + 1) % videosData.length);
     // video2.pause();
+    console.clear();
+    const quota = await getQuota();
+    console.log(
+      `\x1b[36m[storage] Quota:\x1b[0m \x1b[32m${(quota.totalSpace / 1024 / 1024).toFixed(2)}MB\x1b[0m \x1b[33mtotalSpace\x1b[0m`,
+    );
+    console.log(
+      `\x1b[36m[storage] Quota:\x1b[0m \x1b[32m${(quota.usedSpace / 1024 / 1024).toFixed(2)}MB\x1b[0m \x1b[33musedSpace\x1b[0m`,
+    );
   };
 
   window.addEventListener("beforeunload", () => {
